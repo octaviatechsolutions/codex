@@ -1,6 +1,7 @@
 <?php
 $serviceName = $serviceName ?? 'Service';
 $serviceSlug = $serviceSlug ?? '';
+$subservices = $subservices ?? [];
 $highlights = [
     'ai-solutions' => [
         'AI strategy workshops and roadmap.',
@@ -36,6 +37,20 @@ $items = $highlights[$serviceSlug] ?? [];
                         <li class="list-group-item"><?= htmlspecialchars($item) ?></li>
                     <?php endforeach; ?>
                 </ul>
+                <?php if ($subservices): ?>
+                    <div class="mt-4">
+                        <h5 class="fw-semibold">Explore specialized solutions</h5>
+                        <ul class="list-unstyled">
+                            <?php foreach ($subservices as $slug => $label): ?>
+                                <li class="mb-2">
+                                    <a class="link-primary" href="/services/<?= htmlspecialchars($serviceSlug) ?>/<?= htmlspecialchars($slug) ?>">
+                                        <?= htmlspecialchars($label) ?> →
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
             </div>
             <div class="col-lg-4">
                 <div class="p-4 bg-light rounded">

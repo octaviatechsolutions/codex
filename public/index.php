@@ -25,9 +25,13 @@ if ($uri === '/services') {
 }
 
 if (str_starts_with($uri, '/services/')) {
-    $slug = trim(str_replace('/services/', '', $uri), '/');
-    $controller->serviceDetail($slug);
-    exit;
+    $segments = array_values(array_filter(explode('/', trim($uri, '/'))));
+    $slug = $segments[1] ?? '';
+    $subslug = $segments[2] ?? null;
+    if ($slug !== '') {
+        $controller->serviceDetail($slug, $subslug);
+        exit;
+    }
 }
 
 if ($uri === '/portfolio') {
