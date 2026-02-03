@@ -2,6 +2,7 @@
 
 require __DIR__ . '/../app/core/Database.php';
 require __DIR__ . '/../app/models/ContactMessage.php';
+require __DIR__ . '/../app/models/Service.php';
 require __DIR__ . '/../app/controllers/PageController.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';

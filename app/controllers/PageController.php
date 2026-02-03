@@ -60,6 +60,37 @@ class PageController
             ],
         ];
 
+        $databaseService = Service::findBySlug($slug);
+
+        if ($subslug !== null && $databaseService) {
+            $childService = Service::findChildBySlug((int) $databaseService['id'], $subslug);
+            if ($childService) {
+                $this->render('service-subdetail', [
+                    'title' => $childService['meta_title'] ?: $childService['title'] . ' | Octavia Tech Solutions',
+                    'serviceName' => $databaseService['title'],
+                    'serviceSlug' => $databaseService['slug'],
+                    'subserviceName' => $childService['title'],
+                    'subserviceSlug' => $childService['slug'],
+                    'serviceContent' => $childService['content'],
+                    'serviceDescription' => $childService['short_description'],
+                ]);
+                return;
+            }
+        }
+
+        if ($databaseService && $subslug === null) {
+            $children = Service::findChildren((int) $databaseService['id']);
+            $this->render('service-detail', [
+                'title' => $databaseService['meta_title'] ?: $databaseService['title'] . ' | Octavia Tech Solutions',
+                'serviceName' => $databaseService['title'],
+                'serviceSlug' => $databaseService['slug'],
+                'subservices' => $children,
+                'serviceContent' => $databaseService['content'],
+                'serviceDescription' => $databaseService['short_description'],
+            ]);
+            return;
+        }
+
         if (!array_key_exists($slug, $serviceMap)) {
             $this->notFound();
             return;

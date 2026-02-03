@@ -1,18 +1,24 @@
 <?php
 session_start();
+$config = require __DIR__ . '/../config/database.php';
 
 $message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
-    if ($username === 'admin' && $password === 'octavia') {
-        $_SESSION['admin_user'] = $username;
+    $pdo = getDatabaseConnection($config);
+    $statement = $pdo->prepare('SELECT * FROM admin_users WHERE username = ? LIMIT 1');
+    $statement->execute([$username]);
+    $admin = $statement->fetch();
+
+    if ($admin && password_verify($password, $admin['password_hash'])) {
+        $_SESSION['admin_id'] = $admin['id'];
         header('Location: /admin/dashboard.php');
         exit;
     }
 
-    $message = 'Invalid credentials.';
+    $message = 'Invalid login.';
 }
 ?>
 <!DOCTYPE html>
@@ -46,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </form>
                 </div>
             </div>
+            <p class="text-muted small mt-3 mb-0 text-center">Use the admin_users table to manage credentials.</p>
         </div>
     </div>
 </div>

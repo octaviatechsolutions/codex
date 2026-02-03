@@ -3,6 +3,8 @@ $serviceName = $serviceName ?? 'Service';
 $serviceSlug = $serviceSlug ?? '';
 $subserviceName = $subserviceName ?? 'Specialty';
 $subserviceSlug = $subserviceSlug ?? '';
+$serviceContent = $serviceContent ?? '';
+$serviceDescription = $serviceDescription ?? '';
 ?>
 <section class="py-5">
     <div class="container">
@@ -10,14 +12,20 @@ $subserviceSlug = $subserviceSlug ?? '';
         <div class="row mt-3">
             <div class="col-lg-8">
                 <h1 class="fw-bold"><?= htmlspecialchars($subserviceName) ?></h1>
-                <p class="lead">Targeted <?= htmlspecialchars(strtolower($serviceName)) ?> support designed around your business goals.</p>
+                <p class="lead">
+                    <?= htmlspecialchars($serviceDescription ?: 'Targeted ' . strtolower($serviceName) . ' support designed around your business goals.') ?>
+                </p>
                 <div class="content-block">
-                    <p>We align strategy, execution, and performance tracking to deliver measurable outcomes for <?= htmlspecialchars(strtolower($subserviceName)) ?> engagements.</p>
-                    <ul>
-                        <li>Discovery workshops and roadmap planning.</li>
-                        <li>Implementation with agile delivery and QA.</li>
-                        <li>Optimization through analytics and testing.</li>
-                    </ul>
+                    <?php if ($serviceContent): ?>
+                        <?= nl2br(htmlspecialchars($serviceContent)) ?>
+                    <?php else: ?>
+                        <p>We align strategy, execution, and performance tracking to deliver measurable outcomes for <?= htmlspecialchars(strtolower($subserviceName)) ?> engagements.</p>
+                        <ul>
+                            <li>Discovery workshops and roadmap planning.</li>
+                            <li>Implementation with agile delivery and QA.</li>
+                            <li>Optimization through analytics and testing.</li>
+                        </ul>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="col-lg-4">
